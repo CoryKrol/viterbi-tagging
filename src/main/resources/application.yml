@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: viterbi-tagger
+  main:
+    web-application-type: NONE
+
+logging:
+  level:
+    root: OFF
+    me.coryt.viterbi: INFO
