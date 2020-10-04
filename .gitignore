@@ -147,3 +147,6 @@ buildNumber.properties
 .idea/sonarlint/
 .idea/vcs.xml
 Bigram Language Model.iml
+/mvnw
+/mvnw.cmd
+/.mvn/
