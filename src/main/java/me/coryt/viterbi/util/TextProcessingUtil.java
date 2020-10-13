@@ -1,5 +1,6 @@
 package me.coryt.viterbi.util;
 
+import javafx.util.Pair;
 import lombok.experimental.UtilityClass;
 
 import java.io.IOException;
@@ -9,14 +10,15 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @UtilityClass
 public class TextProcessingUtil {
 	
-	public List<List<String>> tokenizeCorpus(String corpus) {
-		return splitSentences(splitCorpus(removeNonWordCharacters(corpus.toLowerCase()))).stream().filter(list -> !list.isEmpty()).collect(Collectors.toList());
+	public List<List<Pair<String, String>>> tokenizeCorpus(String corpus) {
+		return generatePosTuples(splitSentences(splitCorpus(corpus)));
 	}
 	
 	/**
@@ -40,11 +42,12 @@ public class TextProcessingUtil {
 	 * @return list of sentences
 	 */
 	public List<String> splitCorpus(String corpus) {
-		return Arrays.asList(corpus.split(ApplicationConstants.NEWLINE_REGEX));
+		List<String> result = Arrays.stream(corpus.split(ApplicationConstants.NEWLINE_REGEX)).collect(Collectors.toList());
+		return result.stream().filter(Predicate.not(String::isEmpty)).collect(Collectors.toList());
 	}
 	
 	/**
-	 * Split a list of sentences into a list of sentence tokens
+	 * Split a list of sentences into a list of Tokens/PoSTag
 	 *
 	 * @param corpus list of sentences
 	 * @return list of sentences represented as tokens
@@ -57,6 +60,19 @@ public class TextProcessingUtil {
 			sentenceList.add(tmpList);
 		});
 		return sentenceList;
+	}
+	
+	public List<List<Pair<String, String>>> generatePosTuples(List<List<String>> tokenizedCorpus) {
+		List<List<Pair<String, String>>> returnList = new ArrayList<>();
+		for (List<String> sentence : tokenizedCorpus) {
+			List<Pair<String, String>> sentenceTuples = new ArrayList<>();
+			for (String tokenTag : sentence) {
+				List<String> tupleList = Arrays.asList(tokenTag.split("/"));
+				sentenceTuples.add(new Pair<>(tupleList.get(0), tupleList.get(1)));
+			}
+			returnList.add(sentenceTuples);
+		}
+		return returnList;
 	}
 	
 	public String readFromFile(String filePath) {
