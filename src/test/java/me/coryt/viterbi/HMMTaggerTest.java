@@ -42,11 +42,11 @@ class HMMTaggerTest {
 	void testCalculateStateTransitionProbabilities_Case1() {
 		List<List<Pair<String, String>>> sentences = TextProcessingUtil.tokenizeCorpus(ApplicationConstants.TEST_CORPUS3);
 		
-		Map<String, Double> result = hMMTagger.calculateStateTransitionProbabilities(sentences);
+		Map<String, Integer> result = hMMTagger.countStateTransitions(sentences);
 		
 		Assertions.assertNotNull(result);
-		Assertions.assertEquals(0.25, result.get("NOUN VERB"));
-		Assertions.assertEquals(0.125, result.get("NOUN NOUN"));
+		Assertions.assertEquals(2, result.get("NOUN VERB"));
+		Assertions.assertEquals(1, result.get("NOUN NOUN"));
 	}
 	
 	@DisplayName("Should parse corpus")
@@ -54,11 +54,11 @@ class HMMTaggerTest {
 	void testCalculateStateTransitionProbabilities_Case2() {
 		List<List<Pair<String, String>>> sentences = TextProcessingUtil.tokenizeCorpus(ApplicationConstants.TEST_CORPUS2);
 		
-		Map<String, Double> result = hMMTagger.calculateStateTransitionProbabilities(sentences);
+		Map<String, Integer> result = hMMTagger.countStateTransitions(sentences);
 		
 		Assertions.assertNotNull(result);
-		Assertions.assertEquals(0.00986103179135732, result.get("NOUN VERB"));
-		Assertions.assertEquals(0.07846183133447554, result.get("NOUN NOUN"));
+		Assertions.assertEquals(5, result.get("NOUN VERB"));
+		Assertions.assertEquals(16, result.get("NOUN NOUN"));
 	}
 	
 	@DisplayName("Should parse corpus from training data")
@@ -68,11 +68,54 @@ class HMMTaggerTest {
 				.tokenizeCorpus(
 						ResourceReader.readFileToString("train/ca01"));
 		
-		Map<String, Double> result = hMMTagger.calculateStateTransitionProbabilities(sentences);
+		Map<String, Integer> result = hMMTagger.countStateTransitions(sentences);
 		
 		Assertions.assertNotNull(result);
 		Assertions.assertTrue(result.size() < 122);
-		Assertions.assertEquals(2.1846325163685504E-7, result.get("NOUN VERB"));
-		Assertions.assertEquals(2.0541906841494624E-10, result.get("NOUN NOUN"));
+		Assertions.assertEquals(123, result.get("NOUN VERB"));
+		Assertions.assertEquals(207, result.get("NOUN NOUN"));
+	}
+	
+	@DisplayName("Should count the number of occurrences of each POS")
+	@Test
+	void testPosCounter_Case1() {
+		List<List<Pair<String, String>>> sentences = TextProcessingUtil
+				.tokenizeCorpus(ApplicationConstants.TEST_CORPUS3);
+		
+		Map<String, Integer> result = hMMTagger.posCounter(sentences);
+		
+		Assertions.assertNotNull(result);
+		Assertions.assertTrue(result.size() < 12);
+		Assertions.assertEquals(5, result.get("NOUN"));
+		Assertions.assertEquals(2, result.get("VERB"));
+	}
+	
+	@DisplayName("Should count the number of occurrences of each POS")
+	@Test
+	void testPosCounter_Case2() {
+		List<List<Pair<String, String>>> sentences = TextProcessingUtil
+				.tokenizeCorpus(ApplicationConstants.TEST_CORPUS2);
+		
+		Map<String, Integer> result = hMMTagger.posCounter(sentences);
+		
+		Assertions.assertNotNull(result);
+		Assertions.assertTrue(result.size() < 12);
+		Assertions.assertEquals(43, result.get("NOUN"));
+		Assertions.assertEquals(12, result.get("VERB"));
+	}
+	
+	@DisplayName("Should count the number of occurrences of each POS")
+	@Test
+	void testPosCounter_Case3() {
+		List<List<Pair<String, String>>> sentences = TextProcessingUtil
+				.tokenizeCorpus(
+						ResourceReader.readFileToString("train/ca01"));
+		
+		Map<String, Integer> result = hMMTagger.posCounter(sentences);
+		
+		Assertions.assertNotNull(result);
+		Assertions.assertTrue(result.size() < 12);
+		Assertions.assertEquals(704, result.get("NOUN"));
+		Assertions.assertEquals(382, result.get("VERB"));
 	}
 }
