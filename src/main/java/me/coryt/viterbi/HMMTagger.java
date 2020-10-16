@@ -41,4 +41,29 @@ public class HMMTagger {
 		
 		return tagMap;
 	}
+	
+	public Map<String, Double> calculateStateTransitionProbabilities(List<List<Pair<String, String>>> sentences) {
+		
+		Map<String, Double> tagMap = new HashMap<>();
+		
+		int totalPossibleTransitions = 0;
+		for (List<Pair<String, String>> sentence : sentences) {
+			for (int i = 0; i < sentence.size() - 1; i++) {
+				String tagChange = sentence.get(i).getValue() + " " + sentence.get(i + 1).getValue();
+				if (tagMap.containsKey(tagChange)) {
+					tagMap.put(tagChange, tagMap.get(tagChange) + 1.0);
+				} else {
+					tagMap.put(tagChange, 1.0);
+				}
+				totalPossibleTransitions++;
+			}
+			
+			
+			for (Map.Entry<String, Double> entry : tagMap.entrySet()) {
+				entry.setValue(entry.getValue() / (double) totalPossibleTransitions);
+			}
+		}
+		
+		return tagMap;
+	}
 }
