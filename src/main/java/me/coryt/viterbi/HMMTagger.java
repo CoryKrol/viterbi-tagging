@@ -4,6 +4,7 @@ import javafx.util.Pair;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.coryt.viterbi.util.ApplicationConstants;
+import me.coryt.viterbi.util.TextProcessingUtil;
 
 import java.util.*;
 
@@ -14,7 +15,6 @@ public class HMMTagger {
 	private Map<String, Double> stateTransitionProbabilities;
 	private Map<String, Double> emissionProbabilities;
 	private int vocabSize;
-	private int tagCount;
 	private Map<String, Integer> posCounts;
 	private List<String> posTagKeys;
 	
@@ -22,7 +22,7 @@ public class HMMTagger {
 	private List<List<Integer>> backpointer;
 	
 	public List<List<Pair<String, String>>> load_corpus(String path) {
-		return null;
+		return TextProcessingUtil.tokenizeCorpus(TextProcessingUtil.readFromFile(path));
 	}
 	
 	public void initialize_probabilities(List<List<Pair<String, String>>> sentences) {

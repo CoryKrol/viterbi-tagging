@@ -269,7 +269,7 @@ class HMMTaggerTest {
 		
 		hMMTagger.initialize_probabilities(sentences);
 		
-		String result = hMMTagger.viterbi_decode("merger proposed friday");
+		String result = hMMTagger.viterbi_decode("People race tomorrow .");
 		
 		
 		Assertions.assertNotNull(result);
