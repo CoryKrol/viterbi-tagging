@@ -38,6 +38,9 @@ public class ApplicationConstants {
 	public final String TEST_CORPUS3 = "Merger/NOUN proposed/VERB \n" +
 			"The/DETERMINER Fulton/NOUN County/NOUN Grand/ADJECTIVE Jury/NOUN said/VERB Friday/NOUN an/DETERMINER";
 	
+	public final String TEST_CORPUS4 = "Merger/NOUN proposed/VERB friday/NOUN \n" +
+			"The/DETERMINER Fulton/NOUN County/NOUN Grand/ADJECTIVE Jury/NOUN said/VERB Friday/NOUN an/DETERMINER";
+	
 	
 	public boolean LAPLACE_SMOOTHING = true;
 }

@@ -68,7 +68,7 @@ public class TextProcessingUtil {
 			List<Pair<String, String>> sentenceTuples = new ArrayList<>();
 			for (String tokenTag : sentence) {
 				List<String> tupleList = Arrays.asList(tokenTag.split("/"));
-				sentenceTuples.add(new Pair<>(tupleList.get(0), tupleList.get(1)));
+				sentenceTuples.add(new Pair<>(tupleList.get(0).toLowerCase(), tupleList.get(1)));
 			}
 			returnList.add(sentenceTuples);
 		}
